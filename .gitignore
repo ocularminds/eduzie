@@ -1,0 +1,21 @@
+#maven
+target/
+/soap/
+/src/main/soap/
+/docs/
+
+# Gradle
+.gradle/
+build/
+dexxis-connector.log/
+build/scripts/dexxis-connector/
+
+#dexxis-connector
+dexxis-connector.jar
+dexxis-bridge.jar
+dexxis-bridge-web.jar
+dexxis-connector.log/
+Thumbs.db
+buildSrc/out/
+nbactions.xml
+/.nb-gradle/
