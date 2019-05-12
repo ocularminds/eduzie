@@ -1,0 +1,369 @@
+<?xml version="1.0"?>
+<PMML version="4.2" xmlns="http://www.dmg.org/PMML-4_2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dmg.org/PMML-4_2 http://www.dmg.org/v4-2/pmml-4-2.xsd">
+ <Header copyright="Copyright (c) 2016 Director" description="Generalized Linear Regression Model">
+  <Extension name="user" value="Director" extender="Rattle/PMML"/>
+  <Application name="Rattle/PMML" version="1.4"/>
+  <Timestamp>2016-01-02 09:20:42</Timestamp>
+ </Header>
+ <DataDictionary numberOfFields="13">
+  <DataField name="data.trainingSet$TARGET_Adjusted" optype="continuous" dataType="double"/>
+  <DataField name="ID" optype="continuous" dataType="double"/>
+  <DataField name="Age" optype="continuous" dataType="double"/>
+  <DataField name="Employment" optype="categorical" dataType="string">
+   <Value value="Consultant"/>
+   <Value value="Private"/>
+   <Value value="PSFederal"/>
+   <Value value="PSLocal"/>
+   <Value value="PSState"/>
+   <Value value="SelfEmp"/>
+  </DataField>
+  <DataField name="Education" optype="categorical" dataType="string">
+   <Value value="Associate"/>
+   <Value value="Bachelor"/>
+   <Value value="College"/>
+   <Value value="Doctorate"/>
+   <Value value="HSgrad"/>
+   <Value value="Master"/>
+   <Value value="Preschool"/>
+   <Value value="Professional"/>
+   <Value value="Vocational"/>
+   <Value value="Yr10"/>
+   <Value value="Yr11"/>
+   <Value value="Yr12"/>
+   <Value value="Yr1t4"/>
+   <Value value="Yr5t6"/>
+   <Value value="Yr7t8"/>
+   <Value value="Yr9"/>
+  </DataField>
+  <DataField name="Marital" optype="categorical" dataType="string">
+   <Value value="Absent"/>
+   <Value value="Divorced"/>
+   <Value value="Married"/>
+   <Value value="Married-spouse-absent"/>
+   <Value value="Unmarried"/>
+   <Value value="Widowed"/>
+  </DataField>
+  <DataField name="Occupation" optype="categorical" dataType="string">
+   <Value value="Cleaner"/>
+   <Value value="Clerical"/>
+   <Value value="Executive"/>
+   <Value value="Farming"/>
+   <Value value="Home"/>
+   <Value value="Machinist"/>
+   <Value value="Professional"/>
+   <Value value="Protective"/>
+   <Value value="Repair"/>
+   <Value value="Sales"/>
+   <Value value="Service"/>
+   <Value value="Support"/>
+   <Value value="Transport"/>
+  </DataField>
+  <DataField name="Income" optype="continuous" dataType="double"/>
+  <DataField name="Gender" optype="categorical" dataType="string">
+   <Value value="Female"/>
+   <Value value="Male"/>
+  </DataField>
+  <DataField name="Deductions" optype="continuous" dataType="double"/>
+  <DataField name="Hours" optype="continuous" dataType="double"/>
+  <DataField name="IGNORE_Accounts" optype="categorical" dataType="string">
+   <Value value="Canada"/>
+   <Value value="China"/>
+   <Value value="Columbia"/>
+   <Value value="Cuba"/>
+   <Value value="Ecuador"/>
+   <Value value="England"/>
+   <Value value="Fiji"/>
+   <Value value="Germany"/>
+   <Value value="Guatemala"/>
+   <Value value="Hong"/>
+   <Value value="Hungary"/>
+   <Value value="India"/>
+   <Value value="Indonesia"/>
+   <Value value="Iran"/>
+   <Value value="Ireland"/>
+   <Value value="Italy"/>
+   <Value value="Jamaica"/>
+   <Value value="Japan"/>
+   <Value value="Malaysia"/>
+   <Value value="Mexico"/>
+   <Value value="NewZealand"/>
+   <Value value="Nicaragua"/>
+   <Value value="Philippines"/>
+   <Value value="Poland"/>
+   <Value value="Portugal"/>
+   <Value value="Scotland"/>
+   <Value value="Singapore"/>
+   <Value value="Taiwan"/>
+   <Value value="UnitedStates"/>
+   <Value value="Vietnam"/>
+   <Value value="Yugoslavia"/>
+  </DataField>
+  <DataField name="RISK_Adjustment" optype="continuous" dataType="double"/>
+ </DataDictionary>
+ <GeneralRegressionModel modelName="General_Regression_Model" modelType="generalizedLinear" functionName="regression" algorithmName="glm" distribution="binomial" linkFunction="logit">
+  <MiningSchema>
+   <MiningField name="data.trainingSet$TARGET_Adjusted" usageType="predicted"/>
+   <MiningField name="ID" usageType="active"/>
+   <MiningField name="Age" usageType="active"/>
+   <MiningField name="Employment" usageType="active"/>
+   <MiningField name="Education" usageType="active"/>
+   <MiningField name="Marital" usageType="active"/>
+   <MiningField name="Occupation" usageType="active"/>
+   <MiningField name="Income" usageType="active"/>
+   <MiningField name="Gender" usageType="active"/>
+   <MiningField name="Deductions" usageType="active"/>
+   <MiningField name="Hours" usageType="active"/>
+   <MiningField name="IGNORE_Accounts" usageType="active"/>
+   <MiningField name="RISK_Adjustment" usageType="active"/>
+  </MiningSchema>
+  <Output>
+   <OutputField name="Predicted_data.trainingSet$TARGET_Adjusted" feature="predictedValue"/>
+  </Output>
+  <ParameterList>
+   <Parameter name="p0" label="(Intercept)"/>
+   <Parameter name="p1" label="ID"/>
+   <Parameter name="p2" label="Age"/>
+   <Parameter name="p3" label="EmploymentPrivate"/>
+   <Parameter name="p4" label="EmploymentPSFederal"/>
+   <Parameter name="p5" label="EmploymentPSLocal"/>
+   <Parameter name="p6" label="EmploymentPSState"/>
+   <Parameter name="p7" label="EmploymentSelfEmp"/>
+   <Parameter name="p8" label="EducationBachelor"/>
+   <Parameter name="p9" label="EducationCollege"/>
+   <Parameter name="p10" label="EducationDoctorate"/>
+   <Parameter name="p11" label="EducationHSgrad"/>
+   <Parameter name="p12" label="EducationMaster"/>
+   <Parameter name="p13" label="EducationPreschool"/>
+   <Parameter name="p14" label="EducationProfessional"/>
+   <Parameter name="p15" label="EducationVocational"/>
+   <Parameter name="p16" label="EducationYr10"/>
+   <Parameter name="p17" label="EducationYr11"/>
+   <Parameter name="p18" label="EducationYr12"/>
+   <Parameter name="p19" label="EducationYr1t4"/>
+   <Parameter name="p20" label="EducationYr5t6"/>
+   <Parameter name="p21" label="EducationYr7t8"/>
+   <Parameter name="p22" label="EducationYr9"/>
+   <Parameter name="p23" label="MaritalDivorced"/>
+   <Parameter name="p24" label="MaritalMarried"/>
+   <Parameter name="p25" label="MaritalMarried-spouse-absent"/>
+   <Parameter name="p26" label="MaritalUnmarried"/>
+   <Parameter name="p27" label="MaritalWidowed"/>
+   <Parameter name="p28" label="OccupationClerical"/>
+   <Parameter name="p29" label="OccupationExecutive"/>
+   <Parameter name="p30" label="OccupationFarming"/>
+   <Parameter name="p31" label="OccupationHome"/>
+   <Parameter name="p32" label="OccupationMachinist"/>
+   <Parameter name="p33" label="OccupationProfessional"/>
+   <Parameter name="p34" label="OccupationProtective"/>
+   <Parameter name="p35" label="OccupationRepair"/>
+   <Parameter name="p36" label="OccupationSales"/>
+   <Parameter name="p37" label="OccupationService"/>
+   <Parameter name="p38" label="OccupationSupport"/>
+   <Parameter name="p39" label="OccupationTransport"/>
+   <Parameter name="p40" label="Income"/>
+   <Parameter name="p41" label="GenderMale"/>
+   <Parameter name="p42" label="Deductions"/>
+   <Parameter name="p43" label="Hours"/>
+   <Parameter name="p44" label="IGNORE_AccountsChina"/>
+   <Parameter name="p45" label="IGNORE_AccountsColumbia"/>
+   <Parameter name="p46" label="IGNORE_AccountsCuba"/>
+   <Parameter name="p47" label="IGNORE_AccountsEcuador"/>
+   <Parameter name="p48" label="IGNORE_AccountsEngland"/>
+   <Parameter name="p49" label="IGNORE_AccountsFiji"/>
+   <Parameter name="p50" label="IGNORE_AccountsGermany"/>
+   <Parameter name="p51" label="IGNORE_AccountsGuatemala"/>
+   <Parameter name="p52" label="IGNORE_AccountsHong"/>
+   <Parameter name="p53" label="IGNORE_AccountsHungary"/>
+   <Parameter name="p54" label="IGNORE_AccountsIndia"/>
+   <Parameter name="p55" label="IGNORE_AccountsIndonesia"/>
+   <Parameter name="p56" label="IGNORE_AccountsIran"/>
+   <Parameter name="p57" label="IGNORE_AccountsIreland"/>
+   <Parameter name="p58" label="IGNORE_AccountsItaly"/>
+   <Parameter name="p59" label="IGNORE_AccountsJamaica"/>
+   <Parameter name="p60" label="IGNORE_AccountsJapan"/>
+   <Parameter name="p61" label="IGNORE_AccountsMalaysia"/>
+   <Parameter name="p62" label="IGNORE_AccountsMexico"/>
+   <Parameter name="p63" label="IGNORE_AccountsNewZealand"/>
+   <Parameter name="p64" label="IGNORE_AccountsNicaragua"/>
+   <Parameter name="p65" label="IGNORE_AccountsPhilippines"/>
+   <Parameter name="p66" label="IGNORE_AccountsPoland"/>
+   <Parameter name="p67" label="IGNORE_AccountsPortugal"/>
+   <Parameter name="p68" label="IGNORE_AccountsScotland"/>
+   <Parameter name="p69" label="IGNORE_AccountsSingapore"/>
+   <Parameter name="p70" label="IGNORE_AccountsTaiwan"/>
+   <Parameter name="p71" label="IGNORE_AccountsUnitedStates"/>
+   <Parameter name="p72" label="IGNORE_AccountsVietnam"/>
+   <Parameter name="p73" label="IGNORE_AccountsYugoslavia"/>
+   <Parameter name="p74" label="RISK_Adjustment"/>
+  </ParameterList>
+  <FactorList>
+   <Predictor name="Employment"/>
+   <Predictor name="Education"/>
+   <Predictor name="Marital"/>
+   <Predictor name="Occupation"/>
+   <Predictor name="Gender"/>
+   <Predictor name="IGNORE_Accounts"/>
+  </FactorList>
+  <CovariateList>
+   <Predictor name="ID"/>
+   <Predictor name="Age"/>
+   <Predictor name="Income"/>
+   <Predictor name="Deductions"/>
+   <Predictor name="Hours"/>
+   <Predictor name="RISK_Adjustment"/>
+  </CovariateList>
+  <PPMatrix>
+   <PPCell value="1" predictorName="ID" parameterName="p1"/>
+   <PPCell value="1" predictorName="Age" parameterName="p2"/>
+   <PPCell value="Private" predictorName="Employment" parameterName="p3"/>
+   <PPCell value="PSFederal" predictorName="Employment" parameterName="p4"/>
+   <PPCell value="PSLocal" predictorName="Employment" parameterName="p5"/>
+   <PPCell value="PSState" predictorName="Employment" parameterName="p6"/>
+   <PPCell value="SelfEmp" predictorName="Employment" parameterName="p7"/>
+   <PPCell value="Bachelor" predictorName="Education" parameterName="p8"/>
+   <PPCell value="College" predictorName="Education" parameterName="p9"/>
+   <PPCell value="Doctorate" predictorName="Education" parameterName="p10"/>
+   <PPCell value="HSgrad" predictorName="Education" parameterName="p11"/>
+   <PPCell value="Master" predictorName="Education" parameterName="p12"/>
+   <PPCell value="Preschool" predictorName="Education" parameterName="p13"/>
+   <PPCell value="Professional" predictorName="Education" parameterName="p14"/>
+   <PPCell value="Vocational" predictorName="Education" parameterName="p15"/>
+   <PPCell value="Yr10" predictorName="Education" parameterName="p16"/>
+   <PPCell value="Yr11" predictorName="Education" parameterName="p17"/>
+   <PPCell value="Yr12" predictorName="Education" parameterName="p18"/>
+   <PPCell value="Yr1t4" predictorName="Education" parameterName="p19"/>
+   <PPCell value="Yr5t6" predictorName="Education" parameterName="p20"/>
+   <PPCell value="Yr7t8" predictorName="Education" parameterName="p21"/>
+   <PPCell value="Yr9" predictorName="Education" parameterName="p22"/>
+   <PPCell value="Divorced" predictorName="Marital" parameterName="p23"/>
+   <PPCell value="Married" predictorName="Marital" parameterName="p24"/>
+   <PPCell value="Married-spouse-absent" predictorName="Marital" parameterName="p25"/>
+   <PPCell value="Unmarried" predictorName="Marital" parameterName="p26"/>
+   <PPCell value="Widowed" predictorName="Marital" parameterName="p27"/>
+   <PPCell value="Clerical" predictorName="Occupation" parameterName="p28"/>
+   <PPCell value="Executive" predictorName="Occupation" parameterName="p29"/>
+   <PPCell value="Farming" predictorName="Occupation" parameterName="p30"/>
+   <PPCell value="Home" predictorName="Occupation" parameterName="p31"/>
+   <PPCell value="Machinist" predictorName="Occupation" parameterName="p32"/>
+   <PPCell value="Professional" predictorName="Occupation" parameterName="p33"/>
+   <PPCell value="Protective" predictorName="Occupation" parameterName="p34"/>
+   <PPCell value="Repair" predictorName="Occupation" parameterName="p35"/>
+   <PPCell value="Sales" predictorName="Occupation" parameterName="p36"/>
+   <PPCell value="Service" predictorName="Occupation" parameterName="p37"/>
+   <PPCell value="Support" predictorName="Occupation" parameterName="p38"/>
+   <PPCell value="Transport" predictorName="Occupation" parameterName="p39"/>
+   <PPCell value="1" predictorName="Income" parameterName="p40"/>
+   <PPCell value="Male" predictorName="Gender" parameterName="p41"/>
+   <PPCell value="1" predictorName="Deductions" parameterName="p42"/>
+   <PPCell value="1" predictorName="Hours" parameterName="p43"/>
+   <PPCell value="China" predictorName="IGNORE_Accounts" parameterName="p44"/>
+   <PPCell value="Columbia" predictorName="IGNORE_Accounts" parameterName="p45"/>
+   <PPCell value="Cuba" predictorName="IGNORE_Accounts" parameterName="p46"/>
+   <PPCell value="Ecuador" predictorName="IGNORE_Accounts" parameterName="p47"/>
+   <PPCell value="England" predictorName="IGNORE_Accounts" parameterName="p48"/>
+   <PPCell value="Fiji" predictorName="IGNORE_Accounts" parameterName="p49"/>
+   <PPCell value="Germany" predictorName="IGNORE_Accounts" parameterName="p50"/>
+   <PPCell value="Guatemala" predictorName="IGNORE_Accounts" parameterName="p51"/>
+   <PPCell value="Hong" predictorName="IGNORE_Accounts" parameterName="p52"/>
+   <PPCell value="Hungary" predictorName="IGNORE_Accounts" parameterName="p53"/>
+   <PPCell value="India" predictorName="IGNORE_Accounts" parameterName="p54"/>
+   <PPCell value="Indonesia" predictorName="IGNORE_Accounts" parameterName="p55"/>
+   <PPCell value="Iran" predictorName="IGNORE_Accounts" parameterName="p56"/>
+   <PPCell value="Ireland" predictorName="IGNORE_Accounts" parameterName="p57"/>
+   <PPCell value="Italy" predictorName="IGNORE_Accounts" parameterName="p58"/>
+   <PPCell value="Jamaica" predictorName="IGNORE_Accounts" parameterName="p59"/>
+   <PPCell value="Japan" predictorName="IGNORE_Accounts" parameterName="p60"/>
+   <PPCell value="Malaysia" predictorName="IGNORE_Accounts" parameterName="p61"/>
+   <PPCell value="Mexico" predictorName="IGNORE_Accounts" parameterName="p62"/>
+   <PPCell value="NewZealand" predictorName="IGNORE_Accounts" parameterName="p63"/>
+   <PPCell value="Nicaragua" predictorName="IGNORE_Accounts" parameterName="p64"/>
+   <PPCell value="Philippines" predictorName="IGNORE_Accounts" parameterName="p65"/>
+   <PPCell value="Poland" predictorName="IGNORE_Accounts" parameterName="p66"/>
+   <PPCell value="Portugal" predictorName="IGNORE_Accounts" parameterName="p67"/>
+   <PPCell value="Scotland" predictorName="IGNORE_Accounts" parameterName="p68"/>
+   <PPCell value="Singapore" predictorName="IGNORE_Accounts" parameterName="p69"/>
+   <PPCell value="Taiwan" predictorName="IGNORE_Accounts" parameterName="p70"/>
+   <PPCell value="UnitedStates" predictorName="IGNORE_Accounts" parameterName="p71"/>
+   <PPCell value="Vietnam" predictorName="IGNORE_Accounts" parameterName="p72"/>
+   <PPCell value="Yugoslavia" predictorName="IGNORE_Accounts" parameterName="p73"/>
+   <PPCell value="1" predictorName="RISK_Adjustment" parameterName="p74"/>
+  </PPMatrix>
+  <ParamMatrix>
+   <PCell parameterName="p0" df="1" beta="-14.7385370127242"/>
+   <PCell parameterName="p1" df="1" beta="6.10570225619229e-08"/>
+   <PCell parameterName="p2" df="1" beta="0.014989179991235"/>
+   <PCell parameterName="p3" df="1" beta="0.327657954187721"/>
+   <PCell parameterName="p4" df="1" beta="0.288591375872587"/>
+   <PCell parameterName="p5" df="1" beta="-0.0773547148452772"/>
+   <PCell parameterName="p6" df="1" beta="-0.250019928329391"/>
+   <PCell parameterName="p7" df="1" beta="-1.34809063929076"/>
+   <PCell parameterName="p8" df="1" beta="8.70038692484727"/>
+   <PCell parameterName="p9" df="1" beta="7.70231730024839"/>
+   <PCell parameterName="p10" df="1" beta="10.2976007037397"/>
+   <PCell parameterName="p11" df="1" beta="7.55857093229287"/>
+   <PCell parameterName="p12" df="1" beta="9.73505443051796"/>
+   <PCell parameterName="p13" df="1" beta="-7.10742532019443"/>
+   <PCell parameterName="p14" df="1" beta="10.5556815488468"/>
+   <PCell parameterName="p15" df="1" beta="7.79243224483416"/>
+   <PCell parameterName="p16" df="1" beta="-8.2562039717809"/>
+   <PCell parameterName="p17" df="1" beta="8.45271791554165"/>
+   <PCell parameterName="p18" df="1" beta="2.7094883201365"/>
+   <PCell parameterName="p19" df="1" beta="-8.0242831693599"/>
+   <PCell parameterName="p20" df="1" beta="-8.71322766850478"/>
+   <PCell parameterName="p21" df="1" beta="-8.064714450883"/>
+   <PCell parameterName="p22" df="1" beta="-8.30800952689679"/>
+   <PCell parameterName="p23" df="1" beta="0.174411334605348"/>
+   <PCell parameterName="p24" df="1" beta="2.64208611308674"/>
+   <PCell parameterName="p25" df="1" beta="1.48152910630311"/>
+   <PCell parameterName="p26" df="1" beta="1.28297320070033"/>
+   <PCell parameterName="p27" df="1" beta="0.822297586352514"/>
+   <PCell parameterName="p28" df="1" beta="0.968246091592994"/>
+   <PCell parameterName="p29" df="1" beta="1.83354742717592"/>
+   <PCell parameterName="p30" df="1" beta="0.587874271654933"/>
+   <PCell parameterName="p31" df="1" beta="-13.104926807152"/>
+   <PCell parameterName="p32" df="1" beta="0.222720766148281"/>
+   <PCell parameterName="p33" df="1" beta="1.77612476115203"/>
+   <PCell parameterName="p34" df="1" beta="1.84467021042175"/>
+   <PCell parameterName="p35" df="1" beta="0.877015916790481"/>
+   <PCell parameterName="p36" df="1" beta="0.995259089583763"/>
+   <PCell parameterName="p37" df="1" beta="0.826533416152551"/>
+   <PCell parameterName="p38" df="1" beta="1.66089082788468"/>
+   <PCell parameterName="p39" df="1" beta="1.23088797697061"/>
+   <PCell parameterName="p40" df="1" beta="-4.94152536717671e-07"/>
+   <PCell parameterName="p41" df="1" beta="-0.317731713640411"/>
+   <PCell parameterName="p42" df="1" beta="0.00127636242565849"/>
+   <PCell parameterName="p43" df="1" beta="0.0256281842109097"/>
+   <PCell parameterName="p44" df="1" beta="-10.8937038064532"/>
+   <PCell parameterName="p45" df="1" beta="-16.4151275297694"/>
+   <PCell parameterName="p46" df="1" beta="-19.207329902793"/>
+   <PCell parameterName="p47" df="1" beta="-14.8413694576047"/>
+   <PCell parameterName="p48" df="1" beta="-14.3978846740428"/>
+   <PCell parameterName="p49" df="1" beta="-17.2891720966069"/>
+   <PCell parameterName="p50" df="1" beta="2.01800088404792"/>
+   <PCell parameterName="p51" df="1" beta="-1.59559217073294"/>
+   <PCell parameterName="p52" df="1" beta="-2.1121878706728"/>
+   <PCell parameterName="p53" df="1" beta="-15.006961247309"/>
+   <PCell parameterName="p54" df="1" beta="-17.2567767679007"/>
+   <PCell parameterName="p55" df="1" beta="-16.0606468314399"/>
+   <PCell parameterName="p56" df="1" beta="-20.1606685467178"/>
+   <PCell parameterName="p57" df="1" beta="-2.70327323213063"/>
+   <PCell parameterName="p58" df="1" beta="-16.2440589082137"/>
+   <PCell parameterName="p59" df="1" beta="-21.9316035679534"/>
+   <PCell parameterName="p60" df="1" beta="-15.1534621517844"/>
+   <PCell parameterName="p61" df="1" beta="-16.8910788205368"/>
+   <PCell parameterName="p62" df="1" beta="-9.90201099405852"/>
+   <PCell parameterName="p63" df="1" beta="1.39471443351144"/>
+   <PCell parameterName="p64" df="1" beta="-14.1690241004569"/>
+   <PCell parameterName="p65" df="1" beta="0.0721621433866225"/>
+   <PCell parameterName="p66" df="1" beta="-12.9635415173459"/>
+   <PCell parameterName="p67" df="1" beta="0.838164612720258"/>
+   <PCell parameterName="p68" df="1" beta="-17.3754787901605"/>
+   <PCell parameterName="p69" df="1" beta="-16.1461483343764"/>
+   <PCell parameterName="p70" df="1" beta="-20.1259007994297"/>
+   <PCell parameterName="p71" df="1" beta="-1.13820033186482"/>
+   <PCell parameterName="p72" df="1" beta="-16.9300951665179"/>
+   <PCell parameterName="p73" df="1" beta="-2.36061452173722"/>
+   <PCell parameterName="p74" df="1" beta="0.00462498114406572"/>
+  </ParamMatrix>
+ </GeneralRegressionModel>
+</PMML>
