@@ -9,7 +9,7 @@ package com.ocularminds.eduzie.service;
  import com.ocularminds.eduzie.SearchBroker;
  import com.ocularminds.eduzie.SearchObjectCache;
 
-//@todo: SportSearchJob all quartz jobs by Java 8 concurrency features.
+// @todo SportSearchJob all quartz jobs by Java 8 concurrency features.
 public class SportSearchJob implements Job{
 
 	// tweeter@gidi traffik

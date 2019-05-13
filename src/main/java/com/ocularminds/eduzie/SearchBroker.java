@@ -31,7 +31,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import com.ocularminds.eduzie.service.TrafficSearchJob;
 import com.ocularminds.eduzie.service.EventSearchJob;
 
-//@todo: Replace all Qaurtz jobs with Java 8 Concurrent Features
+// @todo Replace all Qaurtz jobs with Java 8 Concurrent Features
 public class SearchBroker {
 
     public static final int URI_MALFORMED = 0;

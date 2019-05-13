@@ -16,7 +16,7 @@ import org.jivesoftware.smack.packet.Presence.Type;
 
 import java.util.Collection;
 
-//@todo: XmppManager -  should be refactored as spring component/service
+//@todo : XmppManager -  should be refactored as spring component/service
 public class XmppManager {
 
     private static final int PACKET_REPLY_TIMEOUT = 500; // millis

@@ -7,7 +7,7 @@ import org.apache.commons.collections.map.LRUMap;
 /**
  * @author Jejelowo B. Festus
  */
-//@todo: SearchMemoryCache -  fix missing dependencies.
+// @todo SearchMemoryCache -  fix missing dependencies.
 public class SearchMemoryCache<K, T> {
 
     private long timeToLive;

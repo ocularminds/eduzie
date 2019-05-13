@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.apache.commons.collections.MapIterator;
 import org.apache.commons.collections.map.LRUMap;
 
-//@todo: MemoryCache - add common collections dependency
+// @todo MemoryCache - add common collections dependency
 public class MemoryCache<K, T> {
 
     private final long timeToLive;

@@ -9,7 +9,7 @@ import com.ocularminds.eduzie.SearchAgent;
 import com.ocularminds.eduzie.SearchBroker;
 import com.ocularminds.eduzie.SearchObjectCache;
 
-//@todo: EventSearchJob - all quartz jobs by Java 8 concurrency features.
+// @todo EventSearchJob - all quartz jobs by Java 8 concurrency features.
 public class EventSearchJob implements Job{
 
 	// tweeter@gidi traffik
