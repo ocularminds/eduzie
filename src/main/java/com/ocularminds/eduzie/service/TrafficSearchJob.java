@@ -13,7 +13,7 @@ package com.ocularminds.eduzie.service;
  import com.ocularminds.eduzie.SearchBroker;
  import com.ocularminds.eduzie.SearchObjectCache;
 
-//@todo: TrafficSearchJob all quartz jobs by Java 8 concurrency features.
+// @todo TrafficSearchJob all quartz jobs by Java 8 concurrency features.
 public class TrafficSearchJob implements Job{
 
 	// tweeter@gidi traffik

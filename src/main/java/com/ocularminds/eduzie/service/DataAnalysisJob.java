@@ -12,8 +12,5 @@ public class DataAnalysisJob implements Job{
 					"Moving,Accident,Murder,Hold up,Downpour,Fire";
 
    public void execute(JobExecutionContext context) throws JobExecutionException{
-
-
-
    }
 }

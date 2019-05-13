@@ -72,38 +72,38 @@ public class SocketIOService {
             System.out.println("Message sent to client " + client.toString());
         });
 
-        server.addEventListener("connect", String.class, (SocketIOClient client, String data, AckRequest ackRequest) -> {
+        server.addEventListener("connect", String.class, (SocketIOClient client, String data, AckRequest req) -> {
             //String k = user + KeyFactory.keyToString(key);
             String msg = "You are connected!";
             System.out.println(msg);
             server.getBroadcastOperations().sendEvent("connect", msg);
         });
 
-        server.addEventListener("message", JsonObject.class, (SocketIOClient client, JsonObject data, AckRequest ackRequest) -> {
+        server.addEventListener("message", JsonObject.class, (SocketIOClient client, JsonObject data, AckRequest req) -> {
             //String k = user + KeyFactory.keyToString(key);
             System.out.println("received message " + data);
             server.getBroadcastOperations().sendEvent("message", data);
         });
 
-        server.addEventListener("message", String.class, (SocketIOClient client, String data, AckRequest ackRequest) -> {
+        server.addEventListener("message", String.class, (SocketIOClient client, String data, AckRequest req) -> {
             //String k = user + KeyFactory.keyToString(key);
             System.out.println("received message " + data);
             server.getBroadcastOperations().sendEvent("message", data);
         });
 
-        server.addEventListener("ipaddr", String.class, (SocketIOClient socketIOClient, String data, AckRequest ackRequest) -> {
+        server.addEventListener("ipaddr", String.class, (SocketIOClient client, String data, AckRequest req) -> {
             System.out.println("string emit received");
             String str = "This is String Hander";
             server.getBroadcastOperations().sendEvent("string", str);
         });
 
-        server.addEventListener("string", String.class, (SocketIOClient socketIOClient, String data, AckRequest ackRequest) -> {
+        server.addEventListener("string", String.class, (SocketIOClient client, String data, AckRequest req) -> {
             System.out.println("string emit received");
             String str = "This is String Hander";
             server.getBroadcastOperations().sendEvent("string", str);
         });
 
-        server.addEventListener("binary", byte[].class, (SocketIOClient socketIOClient, byte[] buffer, AckRequest ackRequest) -> {
+        server.addEventListener("binary", byte[].class, (SocketIOClient client, byte[] buffer, AckRequest req) -> {
             System.out.println("binary emit received");
             String str = "This is Binary Hander";
             byte[] bt = str.getBytes();
