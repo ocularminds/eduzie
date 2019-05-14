@@ -44,6 +44,7 @@ import javax.servlet.MultipartConfigElement;
 import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 
+//TODO Refactor WebService as Spring Restful and Controllers
 public class WebService {
 
     FeedCache cache;

@@ -6,12 +6,14 @@ import org.apache.commons.collections.map.LRUMap;
 
 /**
  * @author Jejelowo B. Festus
+ * @param <K>
+ * @param <T>
  */
 // @todo SearchMemoryCache -  fix missing dependencies.
 public class SearchMemoryCache<K, T> {
 
     private long timeToLive;
-    private LRUMap searchCacheMap;
+    private final LRUMap searchCacheMap;
 
     protected class SearchCacheObject {
 
@@ -63,12 +65,12 @@ public class SearchMemoryCache<K, T> {
     @SuppressWarnings("unchecked")
     public void cleanup() {
 
-        ArrayList<K> deleteKey = null;
+        ArrayList<K> deleteKey;
         synchronized (searchCacheMap) {
 
             MapIterator itr = searchCacheMap.mapIterator();
-            deleteKey = new ArrayList<K>((searchCacheMap.size() / 2) + 1);
-            K key = null;
+            deleteKey = new ArrayList<>((searchCacheMap.size() / 2) + 1);
+            K key;
             SearchCacheObject c = null;
 
             while (itr.hasNext()) {

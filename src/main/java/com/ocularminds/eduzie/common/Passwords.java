@@ -1,20 +1,25 @@
 package com.ocularminds.eduzie.common;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-// @todo Passwords  - Use BcryptPassword for password encryptions.
-public class Passwords {
+public final class Passwords {
 
-    public static String hashPassword(String pwd) {
-        String hashed = BCrypt.hashpw(pwd, BCrypt.gensalt());
-        return hashed;
+    String password;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public Passwords(BCryptPasswordEncoder bCryptPasswordEncoder, String password) {
+        this.password = password;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public static boolean verifyPassword(String pwd, String hash) {
+    public String hash() {
+        return bCryptPasswordEncoder.encode(this.password);
+    }
+
+    public boolean verify(String hash) {
         if (hash == null) {
             return false;
         }
-        boolean b = BCrypt.checkpw(pwd, hash);
-        return b;
+        return bCryptPasswordEncoder.matches(this.password, hash);
     }
 }
