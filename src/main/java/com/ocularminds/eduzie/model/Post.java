@@ -1,4 +1,4 @@
-package com.ocularminds.eduzie.vao;
+package com.ocularminds.eduzie.model;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "edz_msg", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"mid"})})
-public class Message implements java.io.Serializable {
+public class Post implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,7 +77,7 @@ public class Message implements java.io.Serializable {
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
     private List<Photo> photos;
 
-    public Message() {
+    public Post() {
 
         attendees = new HashSet<User>();
         comments = new ArrayList<Comment>();

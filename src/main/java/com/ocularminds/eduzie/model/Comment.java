@@ -1,4 +1,4 @@
-package com.ocularminds.eduzie.vao;
+package com.ocularminds.eduzie.model;
 
 import java.util.Date;
 
@@ -27,7 +27,7 @@ public class Comment implements java.io.Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mid", insertable = true, updatable = true, nullable = false)
-    Message message;
+    Post message;
 
     @ManyToOne
     @JoinColumn(name = "author", nullable = true)
@@ -66,11 +66,11 @@ public class Comment implements java.io.Serializable {
         this.author = author;
     }
 
-    public Message getMessage() {
+    public Post getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(Post message) {
         this.message = message;
     }
 

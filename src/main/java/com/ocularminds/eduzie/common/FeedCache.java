@@ -1,6 +1,6 @@
 package com.ocularminds.eduzie.common;
 
-import com.ocularminds.eduzie.vao.Feed;
+import com.ocularminds.eduzie.model.Feed;
 import com.ocularminds.eduzie.SearchObjectCache;
 
 import java.util.Scanner;

@@ -1,28 +1,29 @@
-package com.ocularminds.eduzie.dao;
+package com.ocularminds.eduzie.service;
 
 import java.util.List;
 import com.ocularminds.eduzie.Fault;
-import com.ocularminds.eduzie.vao.User;
+import com.ocularminds.eduzie.model.User;
 import com.ocularminds.eduzie.common.Passwords;
+import com.ocularminds.eduzie.dao.DbFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-//TODO make Authorizer spring service
-public class Authorizer {
+//TODO make UsersImpl spring service
+public class UsersImpl {
 
-    private static Authorizer instance;
+    private static UsersImpl instance;
 
-    public static Authorizer instance() {
+    public static UsersImpl instance() {
 
         if (instance == null) {
-            instance = new Authorizer();
+            instance = new UsersImpl();
         }
 
         return instance;
     }
 
-    private Authorizer() {
+    private UsersImpl() {
         //
     }
 

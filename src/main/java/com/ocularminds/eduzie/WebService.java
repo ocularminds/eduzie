@@ -22,18 +22,18 @@ import spark.template.freemarker.FreeMarkerEngine;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import com.ocularminds.eduzie.vao.Feed;
+import com.ocularminds.eduzie.model.Feed;
 import com.ocularminds.eduzie.common.FeedCache;
 import com.ocularminds.eduzie.common.DateUtil;
 import com.ocularminds.eduzie.common.FileUtil;
 import com.ocularminds.eduzie.common.ImageUtil;
 import com.ocularminds.eduzie.common.Passwords;
-import com.ocularminds.eduzie.vao.Place;
-import com.ocularminds.eduzie.vao.User;
-import com.ocularminds.eduzie.vao.Comment;
-import com.ocularminds.eduzie.vao.Message;
-import com.ocularminds.eduzie.dao.Authorizer;
-import com.ocularminds.eduzie.dao.PostWriter;
+import com.ocularminds.eduzie.model.Place;
+import com.ocularminds.eduzie.model.User;
+import com.ocularminds.eduzie.model.Comment;
+import com.ocularminds.eduzie.model.Post;
+import com.ocularminds.eduzie.service.UsersImpl;
+import com.ocularminds.eduzie.service.PostsImpl;
 import com.ocularminds.eduzie.dao.DbFactory;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -49,8 +49,8 @@ public class WebService {
 
     FeedCache cache;
     Gson gson;
-    Authorizer authorizer;
-    PostWriter writer;
+    UsersImpl authorizer;
+    PostsImpl writer;
 
     final File upload = new File("upload");
     private static final String USER_SESSION_ID = "USER_SESSION_ID";
@@ -60,8 +60,8 @@ public class WebService {
 
         cache = FeedCache.instance();
         gson = new Gson();
-        authorizer = Authorizer.instance();
-        writer = PostWriter.instance();
+        authorizer = UsersImpl.instance();
+        writer = PostsImpl.instance();
         DbFactory.instance();
 
         if (!upload.exists() && !upload.mkdirs()) {
@@ -159,7 +159,7 @@ public class WebService {
             Map<String, Object> map = new HashMap<>();
             map.put("pageTitle", "Public Timeline");
             map.put("user", user);
-            List<Message> messages = writer.findPublicTimelineMessages(user.getId());
+            List<Post> messages = writer.findPublicTimelineMessages(user.getId());
             map.put("messages", messages);
             return new ModelAndView(map, "timeline.ftl");
         }, new FreeMarkerEngine());
@@ -190,8 +190,8 @@ public class WebService {
                 halt();
             } else {
 
-                List<Message> messages = writer.findPostForUser(user);
-                Message message = new Message();
+                List<Post> messages = writer.findPostForUser(user);
+                Post message = new Post();
                 message.setTitle("Good " + DateUtil.timeOfDay() + ", " + user.getName().split("\\s+")[0]);
                 message.setTime(DateUtil.tommorow());
                 message.setType(SearchPlace.nextWeather("Lagos,NG"));
@@ -275,8 +275,8 @@ public class WebService {
                         page = "screen.ftl";
                         user = authorizer.findByUserName(user.getEmail());
                         map.put("user", user);
-                        List<Message> messages = writer.findPostForUser(user);
-                        Message message = new Message();
+                        List<Post> messages = writer.findPostForUser(user);
+                        Post message = new Post();
                         message.setTitle("Good " + DateUtil.timeOfDay() + ", " + user.getName().split("\\s+")[0]);
                         message.setTime(DateUtil.tommorow());
                         message.setType(SearchPlace.nextWeather("Lagos,NG"));
@@ -343,7 +343,7 @@ public class WebService {
                 followed = authorizer.isFollowing(authUser.getId(), profileUser.getId());
             }
 
-            List<Message> messages = writer.findPostForUser(profileUser);
+            List<Post> messages = writer.findPostForUser(profileUser);
             Map<String, Object> map = new HashMap<>();
             map.put("pageTitle", username + "'s Timeline");
             map.put("user", authUser);
@@ -559,7 +559,7 @@ public class WebService {
             }
 
             Fault fault = new Fault("00", "Success");
-            Message m = new Message();
+            Post m = new Post();
             m.setPublished(new java.util.Date());
 
             m.setAuthor(user);

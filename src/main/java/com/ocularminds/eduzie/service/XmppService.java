@@ -1,4 +1,4 @@
-package com.ocularminds.eduzie;
+package com.ocularminds.eduzie.service;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
@@ -15,31 +15,22 @@ import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Presence.Type;
 
 import java.util.Collection;
+import org.springframework.stereotype.Service;
 
-//@todo : XmppManager -  should be refactored as spring component/service
-public class XmppManager {
+@Service
+public class XmppService {
 
     private static final int PACKET_REPLY_TIMEOUT = 500; // millis
-    private String server;
-    private int port;
+    private final String server;
+    private final int port;
 
     private ConnectionConfiguration config;
     private XMPPConnection connection;
 
     private ChatManager chatManager;
     private MessageListener messageListener;
-    private static XmppManager instance;
 
-    public static XmppManager getInstance(String server, int port) {
-
-        if (instance == null) {
-            instance = new XmppManager(server, port);
-        }
-
-        return instance;
-    }
-
-    private XmppManager(String server, int port) {
+    public XmppService(String server, int port) {
 
         this.server = server;
         this.port = port;

@@ -1,4 +1,4 @@
-package com.ocularminds.eduzie.vao;
+package com.ocularminds.eduzie.model;
 
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
@@ -23,7 +23,7 @@ public class Photo implements java.io.Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "mid", insertable = true, updatable = true, nullable = false)
-    Message message;
+    Post message;
 
     @Column(name = "link", length = 35, nullable = true)
     private String link;
@@ -39,11 +39,11 @@ public class Photo implements java.io.Serializable {
         this.id = id;
     }
 
-    public Message getMessage() {
+    public Post getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(Post message) {
         this.message = message;
     }
 

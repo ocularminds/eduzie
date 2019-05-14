@@ -4,8 +4,8 @@ import java.io.File;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ocularminds.eduzie.common.FeedCache;
-import com.ocularminds.eduzie.dao.Authorizer;
-import com.ocularminds.eduzie.dao.PostWriter;
+import com.ocularminds.eduzie.service.UsersImpl;
+import com.ocularminds.eduzie.service.PostsImpl;
 import com.ocularminds.eduzie.dao.DbFactory;
 
 import com.corundumstudio.socketio.AckRequest;
@@ -17,8 +17,8 @@ public class SocketIOService {
 
     FeedCache cache;
     Gson gson;
-    Authorizer authorizer;
-    PostWriter writer;
+    UsersImpl authorizer;
+    PostsImpl writer;
 
     final File upload = new File("upload");
 
@@ -26,8 +26,8 @@ public class SocketIOService {
 
         cache = FeedCache.instance();
         gson = new Gson();
-        authorizer = Authorizer.instance();
-        writer = PostWriter.instance();
+        authorizer = UsersImpl.instance();
+        writer = PostsImpl.instance();
         DbFactory.instance();
 
         if (!upload.exists() && !upload.mkdirs()) {

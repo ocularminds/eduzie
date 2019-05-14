@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonArray;
 
 import com.ocularminds.eduzie.SearchPlace;
-import com.ocularminds.eduzie.vao.Place;
+import com.ocularminds.eduzie.model.Place;
 
 public class GeoUtil {
 

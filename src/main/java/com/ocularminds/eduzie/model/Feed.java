@@ -1,4 +1,4 @@
-package com.ocularminds.eduzie.vao;
+package com.ocularminds.eduzie.model;
 
 import java.util.Date;
 import javax.persistence.Column;
