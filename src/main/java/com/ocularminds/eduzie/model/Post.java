@@ -22,16 +22,16 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "edz_msg", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"mid"})})
+@Table(name = "posts", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"pid"})})
 public class Post implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mid", nullable = false, unique = true, length = 11)
+    @Column(name = "pid", nullable = false, unique = true, length = 11)
     private Long id;
 
-    @Column(name = "title", length = 26, nullable = true)
+    @Column(name = "title", length = 150, nullable = true)
     private String title;
 
     @Column(name = "msg_type", length = 18, nullable = false)
@@ -51,8 +51,8 @@ public class Post implements java.io.Serializable {
     private String time;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "event_dt", nullable = true)
-    private Date date;
+    @Column(name = "date_posted", nullable = true)
+    private final Date date;
 
     @Temporal(value = TemporalType.DATE)
     @Column(name = "pub_dt", nullable = true)
@@ -79,9 +79,9 @@ public class Post implements java.io.Serializable {
 
     public Post() {
 
-        attendees = new HashSet<User>();
-        comments = new ArrayList<Comment>();
-        photos = new ArrayList<Photo>();
+        attendees = new HashSet<>();
+        comments = new ArrayList<>();
+        photos = new ArrayList<>();
         published = new Date();
         date = new Date();
     }
@@ -157,7 +157,7 @@ public class Post implements java.io.Serializable {
     public List<Comment> getComments() {
 
         if (comments == null) {
-            comments = new ArrayList<Comment>();
+            comments = new ArrayList<>();
         }
         return comments;
     }
@@ -175,7 +175,7 @@ public class Post implements java.io.Serializable {
     public List<Photo> getPhotos() {
 
         if (photos == null) {
-            photos = new ArrayList<Photo>();
+            photos = new ArrayList<>();
         }
         return photos;
     }

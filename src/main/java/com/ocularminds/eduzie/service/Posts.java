@@ -1,14 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ocularminds.eduzie.service;
+
+import com.ocularminds.eduzie.model.Post;
+import java.util.List;
 
 /**
  *
- * @author Director
+ * @author Festus Jejelowo
  */
 public interface Posts {
-    
+
+    void add(Post post);
+
+    Post get(Long postId);
+
+    List<Post> findByUserId(Long id);
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    List<Post> findPostForUser(Long userId);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    List<Post> findPublicTimelinePosts(Long id);
 }

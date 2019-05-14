@@ -1,21 +1,19 @@
 package com.ocularminds.eduzie.service;
 
-import com.ocularminds.eduzie.dao.DbFactory;
 import java.util.List;
 import java.util.Locale;
 import java.text.SimpleDateFormat;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.ocularminds.eduzie.model.User;
 import com.ocularminds.eduzie.model.Comment;
 import com.ocularminds.eduzie.model.Post;
 import com.ocularminds.eduzie.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class PostsImpl implements Posts{
-    
+@Service
+public class PostsImpl implements Posts {
+
     final SimpleDateFormat sdf = new SimpleDateFormat("DD MMM,yyyy hh:mm:ss", Locale.US);
     final PostRepository repository;
 
@@ -24,170 +22,75 @@ public class PostsImpl implements Posts{
         this.repository = repository;
     }
 
-    public List<Post> findByUser(User user) {
-
-        String sql = "select t from Post t where t.author.id = ?1 order by message.pub_date desc";
-        EntityManager em = DbFactory.instance().getConnection();
-        Query q = em.createQuery(sql);
-        q.setParameter(1, user.getId());
-        List<Post> messages = q.getResultList();
-
-        DbFactory.instance().close(em);
-        return messages;
+    public List<Post> findByUser(Long userId) {
+        return repository.findAllByAuthorId(userId);
     }
 
-    public List<Post> findPostForUser(User user) {
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("select t from Post t where t.author.id = ?1  ");
-        sb.append("or t.author.id in(SELECT u.id FROM User u, IN (u.following) AS f WHERE f.id = ?2) ");
-        sb.append("order by t.published desc ");
-
-        EntityManager em = DbFactory.instance().getConnection();
-        Query q = em.createQuery(sb.toString());
-        q.setParameter(1, user.getId());
-        q.setParameter(2, user.getId());
-
-        return q.getResultList();
+    @Override
+    public List<Post> findPostForUser(Long userId) {
+        return repository.findPostForUser(userId, userId);
     }
 
-    public List<Post> findPublicTimelinePosts(Long userid) {
-
-        StringBuilder sql = new StringBuilder();
-        sql.append("select t from Post t where t.author.id = ?1 ");
-        sql.append("and t.type = ?2 order by t.published desc");
-
-        EntityManager em = DbFactory.instance().getConnection();
-        Query q = em.createQuery(sql.toString());
-        q.setParameter(1, userid);
-        q.setParameter(2, "timeline");
-
-        return q.getResultList();
+    @Override
+    public List<Post> findPublicTimelinePosts(Long userId) {
+        return repository.findByAuthorIdAndType(userId, "timeline");
     }
 
-    public void write(Post m) {
-
-        EntityManager em = DbFactory.instance().getConnection();
-        Post message;
-        User user = em.find(User.class, m.getAuthor().getId());
-
-        try {
-
-            em.getTransaction().begin();
-            if ((m.getId() == null) || (m.getId().longValue() == 0)) {
-
-                message = new Post();
-                message.setPublished(new java.util.Date());
-
-            } else {
-                message = em.find(Post.class, m.getId());
-            }
-
-            message.setText(m.getText());
-            message.setAuthor(user);
-            message.setType(m.getType());
-            message.setTitle(m.getTitle());
-            message.setPhoto(m.getPhoto());
-            message.setPlace(m.getPlace());
-            message.setTime(m.getTime());
-            message.setPublishedStr(sdf.format(new java.util.Date()));
-            //message.setDescription(m.getDescription());
-
-            if ((user.getId() == null) || (user.getId().longValue() == 0)) {
-                em.persist(message);
-            } else {
-                em.merge(message);
-            }
-
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-
-            em.getTransaction().rollback();
-            e.printStackTrace();
-
-        } finally {
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            em.close();
+    /**
+     *
+     * @param post
+     */
+    @Override
+    public void add(Post post) {
+        User user = null;//em.find(User.class, m.getAuthor().getId());
+        if ((post.getId() == null) || (post.getId() == 0)) {
+            post.setPublished(new java.util.Date());
+            repository.save(post);
+        } else {
+            Post oldPost = get(post.getId());
+            oldPost.setText(post.getText());
+            oldPost.setAuthor(user);
+            oldPost.setType(post.getType());
+            oldPost.setTitle(post.getTitle());
+            oldPost.setPhoto(post.getPhoto());
+            oldPost.setPlace(post.getPlace());
+            oldPost.setTime(post.getTime());
+            oldPost.setPublishedStr(sdf.format(new java.util.Date()));
+            repository.save(oldPost);
         }
     }
 
-    public void attend(String messageid, Long userid) {
-
-        EntityManager em = DbFactory.instance().getConnection();
-        User user = em.find(User.class, userid);
-        Post message = em.find(Post.class, new Long(messageid));
-
-        try {
-
-            em.getTransaction().begin();
-            message.addAttendee(user);
-            em.merge(message);
-
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-
-            em.getTransaction().rollback();
-            e.printStackTrace();
-
-        } finally {
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            em.close();
-        }
+    public void attend(Long postId, Long userid) throws Exception {
+        //EntityManager em = DbFactory.instance().getConnection();
+        User user = null;//em.find(User.class, userid);
+        Post post = get(postId);
+        post.addAttendee(user);
+        repository.save(post);
     }
 
-    public void comment(String messageid, Comment c, Long userid) {
+    public void comment(Long postId, Comment c, Long userid) throws Exception {
+        User user = null;//em.find(User.class, userid);
+        Post post = get(postId);
+        Comment comment = new Comment();
+        comment.setAuthor(user);
+        comment.setText(c.getText());
+        comment.setPublishedStr(sdf.format(new java.util.Date()));
 
-        EntityManager em = DbFactory.instance().getConnection();
-        User user = em.find(User.class, userid);
-
-        try {
-
-            em.getTransaction().begin();
-            Post message = em.find(Post.class, new Long(messageid));
-
-            Comment comment = new Comment();
-            comment.setAuthor(user);
-            comment.setText(c.getText());
-            comment.setPublishedStr(sdf.format(new java.util.Date()));
-
-            message.addComment(comment);
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-
-            em.getTransaction().rollback();
-            e.printStackTrace();
-
-        } finally {
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            em.close();
-        }
+        post.addComment(comment);
+        repository.save(post);
     }
 
     public void uncomment(String commentId) {
+        //Query q = em.createQuery("delete from Comment c where c.id = ?1");
+    }
 
-        EntityManager em = DbFactory.instance().getConnection();
-        try {
+    @Override
+    public Post get(Long postId) {
+        return repository.getOne(postId);
+    }
 
-            Query q = em.createQuery("delete from Comment c where c.id = ?1");
-            q.setParameter(1, new Long(commentId));
-            q.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+    @Override
+    public List<Post> findByUserId(Long id) {
+        return repository.findAllByAuthorId(id);
     }
 }
