@@ -1,40 +1,33 @@
 package com.ocularminds.eduzie.service;
 
-import java.util.List;
 import com.ocularminds.eduzie.Fault;
 import com.ocularminds.eduzie.model.User;
 import com.ocularminds.eduzie.common.Passwords;
-import com.ocularminds.eduzie.dao.DbFactory;
+import com.ocularminds.eduzie.repo.UserRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-//TODO make UsersImpl spring service
-public class UsersImpl {
+@Service
+public class UsersImpl implements Users {
 
-    private static UsersImpl instance;
+    final UserRepository repository;
+    final BCryptPasswordEncoder bcryptPasswordEncoder;
 
-    public static UsersImpl instance() {
-
-        if (instance == null) {
-            instance = new UsersImpl();
-        }
-
-        return instance;
+    @Autowired
+    public UsersImpl(UserRepository repository, BCryptPasswordEncoder bcryptPasswordEncoder) {
+        this.repository = repository;
+        this.bcryptPasswordEncoder = bcryptPasswordEncoder;
     }
 
-    private UsersImpl() {
-        //
-    }
-
-    //TODO fix check user using BcryptPasswordEncoder
     public Fault checkUser(User user) {
 
         Fault fault = new Fault();
         User userFound = findByUserName(user.getEmail());
         if (userFound == null) {
             fault.setError("Invalid username");
-        } else if (!new Passwords(user.getPassword()).verify(userFound.getPassword())) {
+        } else if (!new Passwords(bcryptPasswordEncoder, user.getPassword()).verify(userFound.getPassword())) {
             fault.setError("Invalid password");
         } else {
             fault.setData(userFound);
@@ -43,96 +36,45 @@ public class UsersImpl {
         return fault;
     }
 
+    @Override
+    public User get(Long userId) {
+        return repository.getOne(userId);
+    }
+
+    @Override
     public User findByUserName(String email) {
-
-        String sql = "select t from User t where t.email = ?1";
-        EntityManager em = DbFactory.instance().getConnection();
-        Query q = em.createQuery(sql);
-        q.setParameter(1, email);
-        List<User> users = q.getResultList();
-
-        DbFactory.instance().close(em);
-        return (users.size() > 0) ? users.get(0) : null;
+        return repository.findByEmail(email);
     }
 
+    @Override
     public void follow(Long followerId, Long followeeId) {
-
-        EntityManager em = DbFactory.instance().getConnection();
-        try {
-
-            em.getTransaction().begin();
-
-            User follower = em.find(User.class, followerId);
-            User followee = em.find(User.class, followeeId);
-
-            follower.follow(followee);
-            em.merge(follower);
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            em.close();
-        }
+        User follower = get(followerId);
+        User followee = get(followeeId);
+        follower.follow(followee);
+        repository.save(follower);
     }
 
+    @Override
     public void unfollow(Long followerid, Long followeeid) {
 
-        EntityManager em = DbFactory.instance().getConnection();
-        try {
-
-            em.getTransaction().begin();
-            User follower = em.find(User.class, followerid);
-            User followee = em.find(User.class, followeeid);
-
-            follower.unFollow(followee);
-            em.merge(follower);
-            em.getTransaction().commit();
-
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-        } finally {
-
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            em.close();
-        }
+        User follower = get(followerid);
+        User followee = get(followeeid);
+        follower.unFollow(followee);
+        repository.save(follower);
     }
 
-    public boolean isFollowing(Long followerid, Long followeeid) {
-
-        EntityManager em = DbFactory.instance().getConnection();
-        boolean following = false;
-        try {
-
-            Query q = em.createQuery("select u from User u where u.id = ?1 and u.follower.id in(?2)");
-            q.setParameter(1, followeeid);
-            q.setParameter(2, followerid);
-
-            following = (q.getResultList().size() > 0);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return following;
+    @Override
+    public boolean isFollowing(Long followerId, Long followeeId) {
+        return repository.followers(followerId, followeeId).size() > 0;
     }
 
+    @Override
     public void save(User usr) throws Exception {
-
-        EntityManager em = DbFactory.instance().getConnection();
         User user;
-
-        em.getTransaction().begin();
         if ((usr.getId() == null) || (usr.getId() == 0)) {
             user = new User();
-
         } else {
-            user = em.find(User.class, usr.getId());
+            user = get(usr.getId());
         }
 
         user.setEmail(usr.getEmail());
@@ -142,14 +84,6 @@ public class UsersImpl {
         user.setPic(usr.getPic());
         user.setAvatar(usr.getAvatar());
         user.setCoverImage(usr.getCoverImage());
-
-        if ((usr.getId() == null) || (usr.getId() == 0)) {
-            em.persist(user);
-        } else {
-            em.merge(user);
-        }
-
-        em.getTransaction().commit();
-        em.close();
+        repository.save(user);
     }
 }

@@ -5,10 +5,23 @@
  */
 package com.ocularminds.eduzie.service;
 
+import com.ocularminds.eduzie.model.User;
+
 /**
  *
- * @author Director
+ * @author Festus Jejelowo
  */
 public interface Users {
-    
+
+    public User get(Long userId);
+
+    public User findByUserName(String email);
+
+    public void follow(Long followerId, Long followeeId);
+
+    public void unfollow(Long followerid, Long followeeid);
+
+    public boolean isFollowing(Long followerId, Long followeeId);
+
+    public void save(User usr) throws Exception;
 }
