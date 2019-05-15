@@ -70,18 +70,6 @@ public class WebService {
         uploadConfig = new MultipartConfigElement(upload.getAbsolutePath(), 1024 * 1024 * 5, 1024 * 1024 * 5 * 5, 1024 * 1024);
     }
 
-    private void addAuthenticatedUser(Request request, User u) {
-        request.session().attribute(USER_SESSION_ID, u);
-    }
-
-    private void removeAuthenticatedUser(Request request) {
-        request.session().removeAttribute(USER_SESSION_ID);
-    }
-
-    private User getAuthenticatedUser(Request request) {
-        return request.session().attribute(USER_SESSION_ID);
-    }
-
     public static void main(String[] args) {
 
         WebService ws = new WebService();
@@ -328,30 +316,6 @@ public class WebService {
             halt();
             return null;
         });
-
-        /*
-	 * Displays a user's tweets.
-         */
-        Spark.get("/api/move/message/:username", (req, res) -> {
-
-            String username = req.params(":username");
-            User profileUser = authorizer.findByUserName(username);
-
-            User authUser = getAuthenticatedUser(req);
-            boolean followed = false;
-            if (authUser != null) {
-                followed = authorizer.isFollowing(authUser.getId(), profileUser.getId());
-            }
-
-            List<Post> messages = writer.findPostForUser(profileUser);
-            Map<String, Object> map = new HashMap<>();
-            map.put("pageTitle", username + "'s Timeline");
-            map.put("user", authUser);
-            map.put("profileUser", profileUser);
-            map.put("followed", followed);
-            map.put("timelines", messages);
-            return new ModelAndView(map, "timeline.ftl");
-        }, new FreeMarkerEngine());
         /*
 	 * Checks if the user exists
          */
@@ -593,21 +557,6 @@ public class WebService {
 
         });//,new JsonFront());
 
-        Spark.get("/api/move/locate/:longitude/:latitude/:range", (request, response) -> {
-
-            String longitude = request.params(":longitude");
-            String latitude = request.params(":latitude");
-            String distance = request.params(":range");
-
-            List<String> all = new ArrayList();
-            all.add("Festus, 200");
-            all.add("Tolu all");
-            response.status(200);
-            response.type("application/json");
-            return all;
-
-        }, new JsonFront());
-
         Spark.get("/api/move/feeds", (request, response) -> {
 
             List<Feed> feeds = cache.findAll();//new ArrayList<SearchObjectCache>();
@@ -622,55 +571,6 @@ public class WebService {
             return feeds;
 
         }, new JsonFront());
-
-        Spark.post("/api/move/location", (request, response) -> {
-
-            Fault fault = new Fault("00", "Success");
-            Map<String, String> m = gson.fromJson(request.body(), Map.class);
-            String userid = m.get("userid");
-            String longitude = m.get("lon");
-            String latitude = m.get("lat");
-
-            System.out.println("updating user " + userid + " location longitude:" + longitude + ",latitude:" + latitude);
-
-            String name = null;//"Oshodi Lagos Nigeria Lagos Lagos Nigeria Apapa Lagos Nigeria Ikorodu Lagos Nigeria Oworonsoki Ojota Ikeja Agege Ogba Somolu OjuElegba Berger Ojodu ";//"Oshodi";
-            String type = null;//"neighborhood|political|routes|point_of_interest";
-            String distance = "500";
-            String s = SearchPlace.search(latitude, longitude, distance, type, name);
-            List<Place> places = SearchPlace.parsePlaces(latitude, longitude, s);
-            System.out.println("total Places found - " + places.size());
-
-            for (int x = 0; x < places.size(); x++) {
-
-                String d = "";
-                String w = "";
-                double r = places.get(x).getDistance();
-                if (r == 0.00) {
-                    continue;
-                }
-
-                if (places.get(x).getDistance() < 1) {
-
-                    d = String.format("%.2fm", r * 1000);
-                    w = String.format("%2dmins walk", SearchPlace.nextArrival(r, SearchPlace.WALK_MODE));
-
-                } else {
-
-                    double t = SearchPlace.nextArrival(r, SearchPlace.DRIVE_MODE);
-                    d = String.format("%.2fkm", r);
-                    if (t < 1) {
-                        w = String.format("%.2fmins drive", t * 60);
-                    } else {
-                        w = String.format("%.2fhrs drive", t);
-                    }
-                }
-
-                System.out.println("You are " + String.format("%.4f", r) + " " + d + " from " + places.get(x).getName() + " " + w);
-            }
-            return fault;
-
-        }, new JsonFront());
-
     }
 
 }
