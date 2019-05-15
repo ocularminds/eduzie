@@ -4,46 +4,39 @@ import java.io.File;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ocularminds.eduzie.common.FeedCache;
-import com.ocularminds.eduzie.service.UsersImpl;
-import com.ocularminds.eduzie.service.PostsImpl;
-import com.ocularminds.eduzie.dao.DbFactory;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.ocularminds.eduzie.service.Posts;
+import com.ocularminds.eduzie.service.Users;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SocketIOService {
 
     FeedCache cache;
     Gson gson;
-    UsersImpl authorizer;
-    PostsImpl writer;
+    Users authorizer;
+    Posts writer;
 
     final File upload = new File("upload");
 
-    public SocketIOService() {
-
+    @Autowired
+    public SocketIOService(Users users, Posts posts) {
+        authorizer = users;
+        writer = posts;
         cache = FeedCache.instance();
-        gson = new Gson();
-        authorizer = UsersImpl.instance();
-        writer = PostsImpl.instance();
-        DbFactory.instance();
 
         if (!upload.exists() && !upload.mkdirs()) {
             throw new RuntimeException("Failed to create directory " + upload.getAbsolutePath());
         }
-        //uploadConfig = new MultipartConfigElement(upload.getAbsolutePath(),1024*1024*5, 1024*1024*5*5, 1024*1024);
+        init();
     }
 
-    public static void main(String[] args) {
-
-        SocketIOService ws = new SocketIOService();
-        ws.socketIO();
-    }
-
-    private void socketIO() {
-
+    private void init() {
         Configuration config = new Configuration();
         config.setHostname("127.0.0.1");
         config.setPort(7851);
